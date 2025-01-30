@@ -16,12 +16,14 @@ dependencies:
 # Required for issue #3057
 - xlrd==2.0.1
 
+# https://jira-secure.berkeley.edu/browse/DH-456
+- otter-grader==6.1.0
+
 # For https://github.com/berkeley-dsep-infra/datahub/issues/3079
 - websockify
 - pip:
   - notebook==7.0.7
   - jupyter-desktop-server
-  - otter-grader==3.1.4
   # for notebook exporting
   - nbconvert[webpdf]==7.16.4
   - nb2pdf==0.6.2
