@@ -1,17 +1,17 @@
 FROM buildpack-deps:jammy-scm
 
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NB_USER jovyan
-ENV NB_UID 1000
-ENV SHELL /bin/bash
+ENV NB_USER=jovyan
+ENV NB_UID=1000
+ENV SHELL=/bin/bash
 
-ENV CONDA_DIR /srv/conda
-ENV JULIA_DIR /srv/julia
+ENV CONDA_DIR=/srv/conda
+ENV JULIA_DIR=/srv/julia
 
-ENV PATH ${JULIA_DIR}/bin:${CONDA_DIR}/bin:$PATH
+ENV PATH=${JULIA_DIR}/bin:${CONDA_DIR}/bin:$PATH
 
 ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -30,6 +30,7 @@ RUN apt-get update -qq --yes && \
         tmux \
         wget \
         vim \
+        zip \
         tini \
         build-essential \
         locales \
@@ -61,20 +62,17 @@ RUN /tmp/install-miniforge.bash
 USER ${NB_USER}
 
 COPY environment.yml /tmp/environment.yml
-RUN mamba env update -p ${CONDA_DIR}  -f /tmp/environment.yml && mamba clean -afy
-
-COPY infra-requirements.txt /tmp/infra-requirements.txt
-RUN pip install --no-cache -r /tmp/infra-requirements.txt
+RUN mamba env update -q -p ${CONDA_DIR}  -f /tmp/environment.yml && mamba clean -afy
 
 USER root
-ENV PLAYWRIGHT_BROWSERS_PATH ${CONDA_DIR}
+ENV PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
 RUN playwright install-deps
 RUN chown -Rh jovyan:jovyan /srv/conda
 
 USER ${NB_USER}
 
 # DH-330, similar to DH-164
-ENV PLAYWRIGHT_BROWSERS_PATH ${CONDA_DIR}
+ENV PLAYWRIGHT_BROWSERS_PATH=${CONDA_DIR}
 RUN playwright install chromium
 
 # 2024-01-13 sknapp: incompatible due to notebook 7
@@ -84,7 +82,7 @@ RUN playwright install chromium
 COPY install-julia.bash /tmp/install-julia.bash
 RUN /tmp/install-julia.bash
 
-ENV JULIA_DEPOT_PATH ${JULIA_DIR}/pkg
+ENV JULIA_DEPOT_PATH=${JULIA_DIR}/pkg
 
 RUN JUPYTER_DATA_DIR=${CONDA_DIR}/share/jupyter julia -e 'using Pkg; Pkg.add("IJulia"); using IJulia; installkernel("Julia");'
 
