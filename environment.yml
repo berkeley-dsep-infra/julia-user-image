@@ -39,7 +39,6 @@ dependencies:
   - websockify==0.12.0
 
   - pip:
-    - jupyter-desktop-server==0.1.3
     # for notebook exporting
     - nbconvert[webpdf]==7.16.5
     - nb2pdf==0.6.2
