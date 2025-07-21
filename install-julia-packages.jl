@@ -24,7 +24,6 @@ Pkg.add.([
     Pkg.PackageSpec(;name="DifferentialEquations", version="7.16.1"),
     Pkg.PackageSpec(;name="Optim", version="1.13.2"),
     Pkg.PackageSpec(;name="CairoMakie", version="0.14.0"),
-    Pkg.PackageSpec(;name="GLMakie", version="0.12.0"),
     Pkg.PackageSpec(;name="IJulia", version="1.29.0"),
 ]);
 
