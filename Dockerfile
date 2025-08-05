@@ -89,5 +89,6 @@ RUN JUPYTER_DATA_DIR=${CONDA_DIR}/share/jupyter julia -e 'using Pkg; Pkg.add("IJ
 
 COPY install-julia-packages.jl /tmp/install-julia-packages.jl
 RUN /tmp/install-julia-packages.jl
+RUN julia -e 'println(Sys.CPU_NAME)'
 
 ENTRYPOINT ["tini", "--"]
