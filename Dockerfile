@@ -83,6 +83,7 @@ COPY install-julia.bash /tmp/install-julia.bash
 RUN /tmp/install-julia.bash
 
 ENV JULIA_DEPOT_PATH=${JULIA_DIR}/pkg
+ENV JULIA_CPU_TARGET=generic
 
 RUN JUPYTER_DATA_DIR=${CONDA_DIR}/share/jupyter julia -e 'using Pkg; Pkg.add("IJulia"); using IJulia; installkernel("Julia");'
 
